@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Route} from 'react-router-dom';
+import Auth from "./containers/Auth/Auth";
+import Header from "./components/Header/Header";
+import Search from "./containers/Search/Search";
+import Home from "./containers/Home/Home";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    render() {
+        return (
+            <div className={"min-vh-100 d-flex flex-column"}>
+                <Header/>
+
+                <div className={"d-flex flex-grow-1"}>
+                    <Route path={'/'} component={Home} exact/>
+                    <Route path={'/search'} component={Search}/>
+                    <Route path={'/auth'} component={Auth}/>
+                </div>
+            </div>
+        )
+    }
 }
 
 export default App;
