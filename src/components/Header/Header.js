@@ -1,14 +1,15 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faSearch, faSignInAlt  } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faSearch, faSignInAlt  } from '@fortawesome/free-solid-svg-icons';
+import './Header.scss';
 
 class Header extends React.Component {
     render() {
         return (
             <header className={"header"}>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <NavLink className="navbar-brand" to="/" exact>Rutracker Search</NavLink>
+                    <NavLink className="navbar-brand h1 mb-0" to="/" exact>Rutracker Search</NavLink>
 
                     <button className="navbar-toggler" type="button">
                         <span className="navbar-toggler-icon"></span>

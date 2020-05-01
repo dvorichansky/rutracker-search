@@ -1,0 +1,48 @@
+.search-table {
+  margin-top: -.5rem;
+  border-collapse: separate;
+  border-spacing: 0 .5rem;
+}
+.search-table th, .search-table td {
+  border: none;
+}
+
+.search-table td {
+  vertical-align: middle;
+  line-height: 16px;
+}
+
+.search-table thead th {
+  padding: 0;
+  white-space: nowrap;
+}
+
+.search-table thead th:empty {
+  padding: 0.75rem;
+}
+
+.search-table thead button {
+  padding: 0.75rem;
+  font-size: inherit;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.search-table thead button:hover {
+  cursor: pointer;
+  background: #dee2e6;
+}
+
+.search-table tr {
+
+}
+
+.search-table .badge {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.search-table-bolder {
+  font-weight: 500;
+}

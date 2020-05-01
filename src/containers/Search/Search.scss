@@ -1,0 +1,26 @@
+.search-header {
+    position: relative;
+    background: url(https://fpcover.cdnpk.net/image/20191115123221.jpg) center/cover;
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(8,25,43,0.45);
+        z-index: 0;
+        content: '';
+    }
+    > div {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.search-pagination {
+    button {
+        +button {
+            margin-left: 1rem;
+        }
+    }
+}

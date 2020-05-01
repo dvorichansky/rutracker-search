@@ -1,9 +1,65 @@
 @import "~bootstrap/scss/bootstrap";
 
 body {
-  min-width: 320px;
+  min-width: 992px;
+}
+
+h1, .h1 {
+  font-weight: 900;
 }
 
 .container {
   max-width: 1300px;
+}
+
+.ws-nowrap {
+  white-space: nowrap;
+}
+
+.form-group label {
+  margin: 0 0 .25rem 0;
+  font-size: 80%;
+  color: #495057;
+}
+
+// modal
+.modal {
+  background-color: rgba(0,0,0,.5);
+
+  .modal-dialog {
+    max-width: 1300px;
+    padding: 0 50px;
+  }
+
+  .close {
+    padding: 1rem;
+    color: #fff;
+    opacity: 1 !important;
+    font-size: 26px;
+    position: fixed;
+    right: 1rem;
+    top: 0;
+    display: block;
+    font-weight: normal;
+  }
+
+  .modal-backdrop {
+    z-index: -1;
+  }
+}
+
+.modal-open {
+  .modal {
+    overflow-y: scroll;
+  }
+}
+
+.border-left-radius-0 {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.border-right-radius-0 {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }

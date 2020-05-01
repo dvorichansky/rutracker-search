@@ -1,8 +1,12 @@
 import React from 'react';
 import Input from "../../components/Input/Input";
 import Title from "../../components/Title/Title";
+import LoaderContext from "../../context/loader/loaderContext";
 
 class Auth extends React.Component {
+
+    static contextType = LoaderContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +55,9 @@ class Auth extends React.Component {
         })
     }
 
-    rutrackerAPI() {
+    loginRutrackerAPI() {
+        this.context.setLoaderStatus(true);
+
         const {username, password} = this.state.formControls;
 
         const captcha = this.state.captcha;
@@ -62,9 +68,8 @@ class Auth extends React.Component {
         fetch(`http://localhost:9000/rutracker?username=${username.value}&password=${password.value}${captchaParams}`)
             .then(res => res.text())
             .then(res => {
-
                 const responseObject = JSON.parse(res);
-                console.log(responseObject);
+
                 if (responseObject === true) {
                     this.setPersonalData();
                     this.setState({
@@ -72,14 +77,14 @@ class Auth extends React.Component {
                     });
                     this.redirectHomePage();
                 } else {
-                    console.log(responseObject);
                     this.captchaHandler(responseObject);
                 }
+
+                this.context.setLoaderStatus(false);
             });
     }
 
     captchaHandler({captcha, cap_sid, cap_code}) {
-
         const captchaNew = {...this.state.captcha};
 
         captchaNew.status = true;
@@ -116,13 +121,13 @@ class Auth extends React.Component {
         }
     }
 
-    loginHandler = (event) => {
+    loginHandler = event => {
         event.preventDefault();
 
         this.inputIsInvalid();
 
         if (!this.state.formControls.username.isInvalid.status && !this.state.formControls.password.isInvalid.status) {
-            this.rutrackerAPI();
+            this.loginRutrackerAPI();
         }
 
     };
@@ -185,7 +190,7 @@ class Auth extends React.Component {
 
                         {
                             this.state.authorized
-                                ? <h2>Вы авторизированны</h2>
+                                ? <h1>Вы авторизированны</h1>
                                 : <>
                                     <Title value={"Вход"}/>
                                     <form>
@@ -200,7 +205,8 @@ class Auth extends React.Component {
                                                         name={control.name}
                                                         label={control.label}
                                                         value={control.value}
-                                                        isInvalid={control.isInvalid}
+                                                        isInvalidStatus={control.isInvalid.status}
+                                                        isInvalidValue={control.isInvalid.value}
                                                         onChange={(event) => this.inputChangeHandler(event, controlName)}
                                                     />
                                                 )

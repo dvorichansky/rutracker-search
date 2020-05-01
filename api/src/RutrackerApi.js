@@ -3,7 +3,7 @@ const fs = require('fs');
 const Promise = require('bluebird');
 const RateLimiter = require('limitme');
 
-const {parseSearch, parseTopic, parseCaptcha, toWin1251} = require('./rutrackerAPIparsingUtils');
+const {parseSearch, parseTopic, parseCaptcha, toWin1251} = require('./parsingUtils');
 
 const promisify = Promise.promisify;
 
@@ -21,12 +21,12 @@ const URLS = {
     topic: 'http://rutracker.org/forum/viewtopic.php'
 };
 
-class RutrackerAPI {
+class RutrackerApi {
     constructor() {
         this._loggedOn = false;
     }
 
-    async login(username, password, options) {
+    async login(username, password, options, logoutStatus) {
 
         if (await this.checkMaintenance())
             throw new Error('Scheduled maintenance.');
@@ -49,7 +49,9 @@ class RutrackerAPI {
             throw parseCaptcha(toWin1251(response.body));
         }
 
-        await this.logout();
+        if(logoutStatus) {
+            await this.logout();
+        }
 
         this._loggedOn = true;
 
@@ -69,6 +71,7 @@ class RutrackerAPI {
     search(query) {
         if (!this._loggedOn)
             throw new Error('Use "login" at first.');
+
         return new SearchCursor(query);
     };
 
@@ -78,6 +81,9 @@ class RutrackerAPI {
             qs: {t: id},
             encoding: 'binary'
         });
+
+        await this.logout();
+
         return parseTopic(toWin1251(response.body));
     };
 
@@ -109,6 +115,7 @@ class SearchCursor {
             throw new Error('Query string is required.');
 
         this._query = query;
+        this._sort = null;
         this._forum = null;
         this._page = null;
 
@@ -125,19 +132,31 @@ class SearchCursor {
         return this;
     };
 
+    sort(sort) {
+        if (!sort)
+            throw new Error('Sort value is required.');
+
+        this._sort = sort;
+        return this;
+    }
+
     async exec() {
-        let data = {nm: this._query};
+        let data = {nm: this._query, o: this._sort};
 
         if (this._forum) data.f = this._forum;
-        if (this._page) data.start = this._page * 50; // 1 page = 50 topics
+        if (this._page) data.start = this._page * 50 - 50; // 1 page = 50 topics,
 
         let response = await post({
             url: URLS.search,
             qs: data,
             encoding: 'binary'
         });
+
+        const logout = new RutrackerApi().logout;
+        await logout();
+
         return parseSearch(toWin1251(response.body));
     };
 }
 
-module.exports = RutrackerAPI;
+module.exports = RutrackerApi;
